@@ -1,0 +1,54 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true ");
+header("Access-Control-Allow-Methods: OPTIONS, GET, POST");
+header("Access-Control-Allow-Headers: Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control");
+
+$errorMSG = "";
+
+if (empty($_POST["name"])) {
+    $errorMSG = "Name is required ";
+} else {
+    $name = $_POST["name"];
+}
+
+if (empty($_POST["email"])) {
+    $errorMSG = "Email is required ";
+} else {
+    $email = $_POST["email"];
+}
+
+if (empty($_POST["message"])) {
+    $errorMSG = "Message is required ";
+} else {
+    $message = $_POST["message"];
+}
+
+$EmailTo = "islamsamy214@gmail.com";
+$Subject = "New message from Islam's landing page about ".$_POST["message"];
+
+// prepare email body text
+$Body = "";
+$Body .= "Name: ";
+$Body .= $name;
+$Body .= "\n";
+$Body .= "Email: ";
+$Body .= $email;
+$Body .= "\n";
+$Body .= "Message: ";
+$Body .= $message;
+$Body .= "\n";
+
+// send email
+$success = mail($EmailTo, $Subject, $Body, "From:".$email);
+
+// redirect to success page
+if ($success && $errorMSG == ""){
+    echo "success";
+}else{
+    if($errorMSG == ""){
+        echo "Something went wrong :(";
+    } else {
+        echo $errorMSG;
+    }
+}
